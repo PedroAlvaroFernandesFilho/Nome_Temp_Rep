@@ -1,106 +1,56 @@
 import 'package:flutter/material.dart';
-import '../models/loja.dart';
 import '../models/produto.dart';
-import 'widgets/cartao.dart';
-import 'detalhe_page.dart';
-import 'cadastro_page.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class DetalhePage extends StatelessWidget {
+  final Produto produto;
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  late final Loja loja;
-
-  @override
-  void initState() {
-    super.initState();
-    loja = Loja(nome: 'Loja E-Sports');
-    loja.adicionar(Produto(nome: 'Mouse Delux m900 Pro', quantidade: 15, preco: 249.90, dataLancamento: DateTime(2026, 2, 20)));
-    loja.adicionar(Produto(nome: 'Aula F75 Max', quantidade: 12, preco: 299.90, dataLancamento: DateTime(2025, 12, 10)));
-    loja.adicionar(Produto(nome: 'Mchose v9 Pro', quantidade: 10, preco: 199.90, dataLancamento: DateTime(2025, 1, 17)));
-    loja.adicionar(Produto(nome: 'Mousepad Speed XL', quantidade: 20, preco: 89.90, dataLancamento: DateTime(2024, 11, 5)));
-    loja.adicionar(Produto(nome: 'Headset Gamer 7.1', quantidade: 8, preco: 349.90, dataLancamento: DateTime(2025, 3, 1)));
-    loja.adicionar(Produto(nome: 'Suporte Headset RGB', quantidade: 14, preco: 79.90, dataLancamento: DateTime(2024, 9, 15)));
-  }
+  const DetalhePage({super.key, required this.produto});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(loja.nome),
-        centerTitle: true,
+        title: Text(produto.nome),
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            margin: const EdgeInsets.all(16),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.indigo.shade50,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.indigo.shade200),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              produto.nome,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Total de Unidades em Estoque:',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  '${loja.totalUnidades}',
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.indigo,
-                  ),
-                ),
-              ],
+            const SizedBox(height: 12),
+            Text(
+              'Preço: R\$ ${produto.preco.toStringAsFixed(2)}',
+              style: const TextStyle(
+                fontSize: 18,
+                color: Colors.indigo,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: loja.produtos.length,
-              itemBuilder: (context, index) {
-                final produto = loja.produtos[index];
-                return InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => DetalhePage(produto: produto),
-                      ),
-                    );
-                  },
-                  child: Cartao(produto: produto),
-                );
-              },
+            const Divider(height: 32),
+            // Dado extra 1 não exibido no cartão
+            Text(
+              'Quantidade em estoque: ${produto.quantidade} unidades',
+              style: const TextStyle(fontSize: 16),
             ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.indigo,
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.add),
-        onPressed: () async {
-          final novoProduto = await Navigator.of(context).push<Produto>(
-            MaterialPageRoute(builder: (context) => const CadastroPage()),
-          );
-
-          if (novoProduto != null) {
-            setState(() {
-              loja.adicionar(novoProduto);
-            });
-          }
-        },
+            const SizedBox(height: 8),
+            // Dado extra 2 não exibido no cartão
+            Text(
+              'Data de lançamento: ${produto.dataLancamento.day.toString().padLeft(2, '0')}/${produto.dataLancamento.month.toString().padLeft(2, '0')}/${produto.dataLancamento.year}',
+              style: const TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Ficha técnica: ${produto.ficha()}',
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+          ],
+        ),
       ),
     );
   }
