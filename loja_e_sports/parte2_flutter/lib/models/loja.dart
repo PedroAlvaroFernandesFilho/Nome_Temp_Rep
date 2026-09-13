@@ -8,6 +8,8 @@ class Loja {
 
   Loja({required this.nome});
 
+  List<Produto> get produtos => _produtos;
+
   void adicionar(Produto produto) {
     _produtos.add(produto);
   }
