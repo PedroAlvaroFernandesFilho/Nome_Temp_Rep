@@ -1,5 +1,4 @@
 class Produto {
-
   String nome;
   int quantidade;
   double preco;
@@ -9,10 +8,10 @@ class Produto {
     required this.nome,
     required this.quantidade,
     required this.preco,
-    required this.dataLancamento
+    required this.dataLancamento,
   });
 
-  String ficha(){
-    return '$nome, $quantidade unidades, R\$ ${preco.toStringAsFixed(2)}, ' 'Ano: ${dataLancamento.year}';
+  String ficha() {
+    return '$nome, $quantidade unidades, R\$ ${preco.toStringAsFixed(2)}, Ano: ${dataLancamento.year}';
   }
 }

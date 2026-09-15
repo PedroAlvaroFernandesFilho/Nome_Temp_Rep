@@ -14,11 +14,30 @@ class DetalhePage extends StatelessWidget {
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Imagem individual de cada produto
+            Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  produto.imagemUrl,
+                  height: 150, // Diminuir para ajustar a altura
+                  width: 150,  // Definir uma largura fixa
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    height: 150,
+                    width: 150,
+                    color: Colors.grey.shade200,
+                    child: const Icon(Icons.broken_image, size: 40, color: Colors.grey),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
             Text(
               produto.nome,
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
